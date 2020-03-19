@@ -1,4 +1,16 @@
-﻿[cmdletBinding(PositionalBinding=$false)]
+﻿<#
+.SYNOPSIS
+    Generieren von Test Verzeichnissen
+.DESCRIPTION
+    Generiert eine angegebene Anzahl von Ordner mit Dateien und Dateiinhalt für Testzwecke
+.PARAMETER Destinationpath
+    Ordername / Pfad unter dem die TestDateien erstellt werden sollen, der Pfad muss nicht vorhanden sein
+.EXAMPLE
+    ParameterExample.ps1 -Destinationpath C:\testfiles
+
+    Es wird der angegebene Ordner erstellt und mit der Standard Anzahl von 2 Dateien pro Ordner befüllt.
+#>
+[cmdletBinding(PositionalBinding=$false)]
 Param(
 
 [ValidateScript({Test-Path -Path $PSItem -IsValid})]
