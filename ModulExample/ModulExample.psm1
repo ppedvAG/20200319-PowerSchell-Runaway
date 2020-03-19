@@ -1,4 +1,6 @@
-﻿<#
+﻿function New-TestFolderStructure
+{
+<#
 .SYNOPSIS
     Generieren von Test Verzeichnissen
 .DESCRIPTION
@@ -64,14 +66,74 @@ for($i=1;$i -le $DirCount; $i++)
     for($j=1; $j -le $FileCount; $j ++)
     {
         Write-Debug -Message "Start DAtei Schleife"
+
+        $DirName = LastLetterSlash -pathtext $DirName
+
+        <# Durch Funktion ersetzt
         if($DirName.EndsWith("\") -eq $false)
         {
             $DirName += "\"
         }
+        #>
+
+
         $Filename = $DirName + "\File-$("{0:D3}" -f $j).txt"
         New-Item -Path $Filename -ItemType File 
         Write-Verbose -Message "Datei $Filename wurde erstellt"
         Out-File -Append -FilePath $Filename -InputObject $content
     }
 }
+}
+Export-ModuleMember -Function New-TestFolderStructure 
 
+
+function LastLetterSlash
+{
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$pathtext
+    )
+
+    if($pathtext.EndsWith("\") -eq $false)
+    {
+        $pathtext += "\"
+    }
+
+    $pathtext
+}
+
+<#
+.Synopsis
+   Test BPE 
+.DESCRIPTION
+   Verdeutlichung von Beginn Process End Konstruktion
+#>
+function test-bpe
+{
+    [CmdletBinding()]
+    [Alias()]
+    [OutputType([int])]
+    Param
+    (
+        # Hilfebeschreibung zu Param1
+        [Parameter(Mandatory=$true,
+                   ValueFromPipeline=$true,
+                   Position=0)]
+        $Param1
+
+    )
+
+    Begin
+    {
+        Write-Host -ForegroundColor Green "Beginn"
+    }
+    Process
+    {
+        Write-Host -ForegroundColor Magenta -Object $Param1
+    }
+    End
+    {
+        Write-Host -ForegroundColor Green "Ende"
+    }
+}
+Export-ModuleMember -Function test-bpe
